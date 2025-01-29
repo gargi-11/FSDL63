@@ -1,0 +1,16 @@
+
+        .yum{
+            border: 2px solid black; width: 334px; height: 334px;
+            overflow: hidden;
+            position: relative;
+        }
+        .item {
+            position: absolute;
+            bottom: -8px;
+        }
+        .yum img {
+            width: 100%;
+        }
+        hr{height: 6px; background-color: black;}
+        p{color: rgb(0, 0, 0); font-size: x-large; text-align: center;}
+        body{background-color:rgb(204, 204, 204) ; margin: 0; padding: 0;}
