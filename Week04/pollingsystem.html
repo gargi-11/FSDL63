@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polling System</title>
+</head>
+<body>
+  <h1>What is your favorite color?</h1>
+
+  <form id="pollForm">
+    <label>
+      <input type="radio" name="color" value="Red"> Red
+    </label><br>
+    <label>
+      <input type="radio" name="color" value="Blue"> Blue
+    </label><br>
+    <label>
+      <input type="radio" name="color" value="Green"> Green
+    </label><br>
+    <label>
+      <input type="radio" name="color" value="Yellow"> Yellow
+    </label><br><br>
+
+    <button type="submit">Vote</button>
+  </form>
+
+  <h2>Poll Results:</h2>
+  <p id="redVotes">Red: 0 votes</p>
+  <p id="blueVotes">Blue: 0 votes</p>
+  <p id="greenVotes">Green: 0 votes</p>
+  <p id="yellowVotes">Yellow: 0 votes</p>
+
+  <script src="pollingsystem.js"></script>
+</body>
+</html>
