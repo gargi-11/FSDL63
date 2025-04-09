@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Records - AngularJS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <style>
+        /* Black, Grey and White Theme */
+        :root {
+            --primary-black: #212121;
+            --secondary-black: #303030;
+            --primary-grey: #757575;
+            --light-grey: #e0e0e0;
+            --light-grey-hover: #f5f5f5;
+            --white: #ffffff;
+            --accent: #424242;
+            --error: #ff5252;
+            --success: #4caf50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--secondary-black);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        header {
+            background-color: var(--primary-black);
+            color: var(--white);
+            padding: 1rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1, h2, h3 {
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        .app-title {
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+        
+        .panel {
+            background-color: var(--primary-black);
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background-color: var(--accent);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-grey);
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--primary-grey);
+            border-radius: 4px;
+            background-color: var(--secondary-black);
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--light-grey);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: var(--primary-grey);
+        }
+        
+        button:disabled {
+            background-color: var(--primary-grey);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-reset {
+            background-color: var(--primary-black);
+            border: 1px solid var(--primary-grey);
+            margin-left: 1rem;
+        }
+        
+        .btn-reset:hover {
+            background-color: #424242;
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .input-error {
+            border-color: var(--error);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: var(--primary-black);
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--primary-grey);
+        }
+        
+        th {
+            background-color: var(--accent);
+            color: var(--white);
+        }
+        
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-delete {
+            background-color: var(--error);
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .btn-delete:hover {
+            background-color: #d32f2f;
+        }
+        
+        .btn-edit {
+            background-color: var(--primary-grey);
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        
+        .btn-edit:hover {
+            background-color: #616161;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .search-container input {
+            flex: 1;
+            margin-right: 1rem;
+        }
+        
+        .status-message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--primary-grey);
+        }
+        
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        .sort-icon {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        
+        .filter-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .highlight {
+            color: var(--light-grey);
+            font-weight: bold;
+        }
+        
+        .no-records {
+            text-align: center;
+            padding: 2rem;
+            color: var(--light-grey);
+        }
+    </style>
+</head>
+<body ng-app="studentRecordsApp">
+    <header>
+        <div class="container">
+            <h1 class="app-title">Student Records Management</h1>
+        </div>
+    </header>
+
+    <div class="container" ng-controller="StudentController">
+        <!-- Status Message -->
+        <div class="status-message success" ng-if="statusMessage" ng-bind="statusMessage"></div>
+        
+        <!-- Student Form Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>{{ editMode ? 'Edit Student' : 'Add New Student' }}</h2>
+            </div>
+            <div class="panel-body">
+                <form name="studentForm" ng-submit="submitForm()" novalidate>
+                    <!-- Student ID -->
+                    <div class="form-group">
+                        <label for="studentId">Student ID:</label>
+                        <input 
+                            type="text" 
+                            id="studentId" 
+                            name="studentId" 
+                            ng-model="student.id" 
+                            required 
+                            ng-pattern="/^S[0-9]{4}$/"
+                            ng-class="{'input-error': studentForm.studentId.$invalid && (studentForm.studentId.$dirty || formSubmitted)}"
+                            placeholder="Format: SXXXX (e.g., S1234)"
+                            ng-disabled="editMode">
+                        <div class="error-message" ng-show="studentForm.studentId.$error.required && (studentForm.studentId.$dirty || formSubmitted)">
+                            Student ID is required
+                        </div>
+                        <div class="error-message" ng-show="studentForm.studentId.$error.pattern && (studentForm.studentId.$dirty || formSubmitted)">
+                            Student ID must be in format SXXXX (e.g., S1234)
+                        </div>
+                    </div>
+                    
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName">Full Name:</label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            name="fullName" 
+                            ng-model="student.name" 
+                            required 
+                            ng-minlength="3"
+                            ng-class="{'input-error': studentForm.fullName.$invalid && (studentForm.fullName.$dirty || formSubmitted)}"
+                            placeholder="Enter full name">
+                        <div class="error-message" ng-show="studentForm.fullName.$error.required && (studentForm.fullName.$dirty || formSubmitted)">
+                            Full Name is required
+                        </div>
+                        <div class="error-message" ng-show="studentForm.fullName.$error.minlength && (studentForm.fullName.$dirty || formSubmitted)">
+                            Full Name must be at least 3 characters
+                        </div>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            ng-model="student.email" 
+                            required
+                            ng-class="{'input-error': studentForm.email.$invalid && (studentForm.email.$dirty || formSubmitted)}"
+                            placeholder="Enter email address">
+                        <div class="error-message" ng-show="studentForm.email.$error.required && (studentForm.email.$dirty || formSubmitted)">
+                            Email is required
+                        </div>
+                        <div class="error-message" ng-show="studentForm.email.$error.email && (studentForm.email.$dirty || formSubmitted)">
+                            Please enter a valid email address
+                        </div>
+                    </div>
+                    
+                    <!-- Course -->
+                    <div class="form-group">
+                        <label for="course">Course:</label>
+                        <select 
+                            id="course" 
+                            name="course" 
+                            ng-model="student.course" 
+                            required
+                            ng-class="{'input-error': studentForm.course.$invalid && (studentForm.course.$dirty || formSubmitted)}">
+                            <option value="">-- Select Course --</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Business">Business</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                        </select>
+                        <div class="error-message" ng-show="studentForm.course.$error.required && (studentForm.course.$dirty || formSubmitted)">
+                            Course is required
+                        </div>
+                    </div>
+                    
+                    <!-- Grade -->
+                    <div class="form-group">
+                        <label for="grade">Grade (0-100):</label>
+                        <input 
+                            type="number" 
+                            id="grade" 
+                            name="grade" 
+                            ng-model="student.grade" 
+                            required 
+                            min="0" 
+                            max="100"
+                            ng-class="{'input-error': studentForm.grade.$invalid && (studentForm.grade.$dirty || formSubmitted)}"
+                            placeholder="Enter grade">
+                        <div class="error-message" ng-show="studentForm.grade.$error.required && (studentForm.grade.$dirty || formSubmitted)">
+                            Grade is required
+                        </div>
+                        <div class="error-message" ng-show="(studentForm.grade.$error.min || studentForm.grade.$error.max) && (studentForm.grade.$dirty || formSubmitted)">
+                            Grade must be between 0 and 100
+                        </div>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" ng-disabled="isProcessing">{{ editMode ? 'Update' : 'Add' }} Student</button>
+                        <button type="button" class="btn-reset" ng-click="resetForm()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Student List Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Student Records</h2>
+            </div>
+            <div class="panel-body">
+                <!-- Search and Filter -->
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        ng-model="searchText" 
+                        placeholder="Search by name, ID or course..." 
+                        ng-change="filterStudents()">
+                </div>
+                
+                <!-- Student Records Table -->
+                <table ng-if="students.length > 0">
+                    <thead>
+                        <tr>
+                            <th ng-click="sortBy('id')">ID 
+                                <span class="sort-icon" ng-show="sortKey === 'id'">{{ sortReverse ? '▼' : '▲' }}</span>
+                            </th>
+                            <th ng-click="sortBy('name')">Name 
+                                <span class="sort-icon" ng-show="sortKey === 'name'">{{ sortReverse ? '▼' : '▲' }}</span>
+                            </th>
+                            <th ng-click="sortBy('email')">Email 
+                                <span class="sort-icon" ng-show="sortKey === 'email'">{{ sortReverse ? '▼' : '▲' }}</span>
+                            </th>
+                            <th ng-click="sortBy('course')">Course 
+                                <span class="sort-icon" ng-show="sortKey === 'course'">{{ sortReverse ? '▼' : '▲' }}</span>
+                            </th>
+                            <th ng-click="sortBy('grade')">Grade 
+                                <span class="sort-icon" ng-show="sortKey === 'grade'">{{ sortReverse ? '▼' : '▲' }}</span>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="student in filteredStudents">
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.course }}</td>
+                            <td>{{ student.grade }} <span ng-if="student.grade >= 60" class="highlight">(Pass)</span><span ng-if="student.grade < 60" class="error-message">(Fail)</span></td>
+                            <td class="actions">
+                                <button class="btn-edit" ng-click="editStudent(student)">Edit</button>
+                                <button class="btn-delete" ng-click="deleteStudent(student)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="no-records" ng-if="filteredStudents.length === 0">
+                    <p ng-if="students.length > 0">No records found matching your search.</p>
+                    <p ng-if="students.length === 0">No student records available. Add a new student to get started.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var app = angular.module('studentRecordsApp', []);
+        
+        app.controller('StudentController', function($scope, $timeout) {
+            // Initialize student record
+            $scope.student = {
+                id: '',
+                name: '',
+                email: '',
+                course: '',
+                grade: ''
+            };
+            
+            // Sample data (for demo purposes)
+            $scope.students = [
+                { id: 'S1001', name: 'John Smith', email: 'john@example.com', course: 'Computer Science', grade: 85 },
+                { id: 'S1002', name: 'Emma Williams', email: 'emma@example.com', course: 'Engineering', grade: 92 },
+                { id: 'S1003', name: 'Michael Brown', email: 'michael@example.com', course: 'Business', grade: 78 },
+                { id: 'S1004', name: 'Olivia Jones', email: 'olivia@example.com', course: 'Mathematics', grade: 65 },
+                { id: 'S1005', name: 'James Miller', email: 'james@example.com', course: 'Physics', grade: 59 }
+            ];
+            
+            $scope.filteredStudents = $scope.students;
+            $scope.editMode = false;
+            $scope.formSubmitted = false;
+            $scope.isProcessing = false;
+            $scope.statusMessage = '';
+            $scope.searchText = '';
+            $scope.sortKey = 'id';
+            $scope.sortReverse = false;
+            
+            // Sort function
+            $scope.sortBy = function(key) {
+                if ($scope.sortKey === key) {
+                    $scope.sortReverse = !$scope.sortReverse;
+                } else {
+                    $scope.sortKey = key;
+                    $scope.sortReverse = false;
+                }
+                
+                $scope.filteredStudents = $scope.filteredStudents.sort(function(a, b) {
+                    let valueA = a[$scope.sortKey];
+                    let valueB = b[$scope.sortKey];
+                    
+                    if (typeof valueA === 'string') {
+                        valueA = valueA.toLowerCase();
+                        valueB = valueB.toLowerCase();
+                    }
+                    
+                    if (valueA < valueB) return $scope.sortReverse ? 1 : -1;
+                    if (valueA > valueB) return $scope.sortReverse ? -1 : 1;
+                    return 0;
+                });
+            };
+            
+            // Filter students based on search text
+            $scope.filterStudents = function() {
+                if (!$scope.searchText) {
+                    $scope.filteredStudents = $scope.students;
+                    return;
+                }
+                
+                let searchLower = $scope.searchText.toLowerCase();
+                $scope.filteredStudents = $scope.students.filter(function(student) {
+                    return student.id.toLowerCase().includes(searchLower) ||
+                           student.name.toLowerCase().includes(searchLower) ||
+                           student.course.toLowerCase().includes(searchLower) ||
+                           student.email.toLowerCase().includes(searchLower);
+                });
+            };
+            
+            // Add or update student record
+            $scope.submitForm = function() {
+                $scope.formSubmitted = true;
+                
+                if ($scope.studentForm.$valid) {
+                    $scope.isProcessing = true;
+                    
+                    // Simulate server delay
+                    $timeout(function() {
+                        if ($scope.editMode) {
+                            // Update existing student
+                            for (let i = 0; i < $scope.students.length; i++) {
+                                if ($scope.students[i].id === $scope.student.id) {
+                                    $scope.students[i] = angular.copy($scope.student);
+                                    break;
+                                }
+                            }
+                            $scope.statusMessage = 'Student record updated successfully!';
+                            $scope.editMode = false;
+                        } else {
+                            // Check if ID already exists
+                            let exists = $scope.students.some(function(s) {
+                                return s.id === $scope.student.id;
+                            });
+                            
+                            if (exists) {
+                                $scope.statusMessage = 'Error: Student ID already exists!';
+                                $scope.isProcessing = false;
+                                return;
+                            }
+                            
+                            // Add new student
+                            $scope.students.push(angular.copy($scope.student));
+                            $scope.statusMessage = 'New student added successfully!';
+                        }
+                        
+                        $scope.isProcessing = false;
+                        $scope.resetForm();
+                        $scope.filterStudents();
+                        
+                        // Clear status message after 3 seconds
+                        $timeout(function() {
+                            $scope.statusMessage = '';
+                        }, 3000);
+                    }, 800);
+                }
+            };
+            
+            // Edit student record
+            $scope.editStudent = function(student) {
+                $scope.editMode = true;
+                $scope.student = angular.copy(student);
+                
+                // Scroll to form
+                document.querySelector('.panel').scrollIntoView({ behavior: 'smooth' });
+            };
+            
+            // Delete student record
+            $scope.deleteStudent = function(student) {
+                if (confirm('Are you sure you want to delete this student record?')) {
+                    $scope.students = $scope.students.filter(function(s) {
+                        return s.id !== student.id;
+                    });
+                    
+                    $scope.filterStudents();
+                    $scope.statusMessage = 'Student record deleted successfully!';
+                    
+                    // Clear status message after 3 seconds
+                    $timeout(function() {
+                        $scope.statusMessage = '';
+                    }, 3000);
+                }
+            };
+            
+            // Reset form
+            $scope.resetForm = function() {
+                $scope.student = {
+                    id: '',
+                    name: '',
+                    email: '',
+                    course: '',
+                    grade: ''
+                };
+                $scope.formSubmitted = false;
+                $scope.editMode = false;
+                
+                if ($scope.studentForm) {
+                    $scope.studentForm.$setPristine();
+                    $scope.studentForm.$setUntouched();
+                }
+            };
+        });
+    </script>
+</body>
+</html>

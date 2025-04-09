@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">
+        <h2>Product Catalog</h2>
+    </div>
+    <div class="card-body">
+        {{#if products.length}}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>In Stock</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{category}}</td>
+                    <td>{{formattedPrice}}</td>
+                    <td>{{#if inStock}}Yes{{else}}No{{/if}}</td>
+                    <td>{{quantity}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="/products/{{_id}}" class="btn btn-primary btn-small">View</a>
+                            <a href="/products/edit/{{_id}}" class="btn btn-secondary btn-small">Edit</a>
+                            <form action="/products/{{_id}}?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger btn-small delete-btn">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p class="text-center">No products found. Add some products to get started.</p>
+        {{/if}}
+        
+        <div class="text-center mt-2">
+            <a href="/products/add" class="btn btn-primary">Add New Product</a>
+        </div>
+    </div>
+</div>

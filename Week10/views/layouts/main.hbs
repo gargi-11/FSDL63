@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} | Node.js Express MongoDB Demo</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    {{> header}}
+    
+    <main>
+        <div class="container">
+            <h1 class="page-title">{{heading}}</h1>
+            
+            {{#if error}}
+            <div class="alert alert-danger">
+                {{error}}
+            </div>
+            {{/if}}
+            
+            {{{body}}}
+        </div>
+    </main>
+    
+    {{> footer}}
+    
+    <script src="/js/main.js"></script>
+</body>
+</html>

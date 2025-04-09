@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header">
+        <h2>Product Details</h2>
+    </div>
+    <div class="card-body">
+        <div class="mb-2">
+            <h3>{{product.name}}</h3>
+            <p class="mb-1"><strong>Category:</strong> {{product.category}}</p>
+            <p class="mb-1"><strong>Price:</strong> {{product.formattedPrice}}</p>
+            <p class="mb-1"><strong>Availability:</strong> {{#if product.inStock}}In Stock ({{product.quantity}} available){{else}}Out of Stock{{/if}}</p>
+        </div>
+        
+        <div class="mb-2">
+            <h4>Description</h4>
+            <p>{{product.description}}</p>
+        </div>
+        
+        <div class="mb-2">
+            <p class="mb-1"><strong>Created:</strong> {{formatDate product.createdAt}}</p>
+            <p class="mb-1"><strong>Last Updated:</strong> {{formatDate product.updatedAt}}</p>
+        </div>
+        
+        <div class="text-center mt-2">
+            <div class="btn-group">
+                <a href="/products" class="btn btn-secondary">Back to Products</a>
+                <a href="/products/edit/{{product._id}}" class="btn btn-primary">Edit Product</a>
+                <form action="/products/{{product._id}}?_method=DELETE" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger delete-btn">Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

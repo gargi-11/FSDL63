@@ -1,0 +1,32 @@
+{
+    "name": "node-express-mongodb-app",
+    "version": "1.0.0",
+    "description": "A demonstration of Node.js with Express and MongoDB",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js",
+      "dev": "nodemon app.js",
+      "callback-demo": "node callback-demo.js",
+      "event-loop-demo": "node event-loop-demo.js"
+    },
+    "keywords": [
+      "node",
+      "express",
+      "mongodb",
+      "callbacks",
+      "event-loop"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.18.2",
+      "express-handlebars": "^7.1.2",
+      "mongoose": "^7.5.3",
+      "body-parser": "^1.20.2",
+      "dotenv": "^16.3.1",
+      "method-override": "^3.0.0"
+    },
+    "devDependencies": {
+      "nodemon": "^3.0.1"
+    }
+  }
