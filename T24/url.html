@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyLink | URL Shortener</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .card-header {
+            background: linear-gradient(to right, #4A00E0, #8E2DE2);
+            color: white;
+            font-weight: bold;
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            box-shadow: none;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #8E2DE2;
+            box-shadow: 0 0 0 0.25rem rgba(142, 45, 226, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #4A00E0, #8E2DE2);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 0, 224, 0.4);
+        }
+        .result-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #8E2DE2;
+        }
+        .copy-btn {
+            background-color: #8E2DE2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .copy-btn:hover {
+            background-color: #7718d1;
+        }
+        .history-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 28px;
+            margin-right: 10px;
+            color: #fff;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .alert {
+            border-radius: 8px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-center">
+                <h1 class="mb-0"><i class="fas fa-link logo"></i> TinyLink</h1>
+                <p class="mb-0 mt-2">Shorten your URLs with style</p>
+            </div>
+            <div class="card-body">
+                <form id="url-form">
+                    <div class="mb-4">
+                        <label for="longUrl" class="form-label">Enter your long URL</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                            <input type="url" class="form-control" id="longUrl" placeholder="https://example.com/very-long-url-that-needs-shortening" required>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary px-5">
+                            <i class="fas fa-compress-alt me-2"></i> Shorten URL
+                        </button>
+                    </div>
+                </form>
+
+                <div id="result" class="result-card mt-4 hidden">
+                    <h5 class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> URL Shortened Successfully!</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Your short URL:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="shortUrl" readonly>
+                            <button class="btn copy-btn" id="copyBtn">
+                                <i class="fas fa-copy me-1"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mb-0">
+                        <i class="fas fa-info-circle me-2"></i> Share this link with anyone for easy access to your original URL.
+                    </div>
+                </div>
+
+                <div id="error-message" class="alert alert-danger mt-4 hidden">
+                    <i class="fas fa-exclamation-triangle me-2"></i> <span id="error-text"></span>
+                </div>
+
+                <div class="mt-5">
+                    <h5><i class="fas fa-history me-2"></i> Recent URLs</h5>
+                    <div id="history" class="mt-3">
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-2x mb-3"></i>
+                            <p>No shortened URLs yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlForm = document.getElementById('url-form');
+            const longUrlInput = document.getElementById('longUrl');
+            const resultDiv = document.getElementById('result');
+            const shortUrlInput = document.getElementById('shortUrl');
+            const copyBtn = document.getElementById('copyBtn');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const historyDiv = document.getElementById('history');
+            
+            // Load history from localStorage
+            loadHistory();
+            
+            urlForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const longUrl = longUrlInput.value.trim();
+                
+                if (!longUrl) {
+                    showError('Please enter a valid URL');
+                    return;
+                }
+                
+                try {
+                    // In a real app, this would call the actual API
+                    // For demo purposes, we'll simulate the API call
+                    const response = await simulateApiCall(longUrl);
+                    
+                    if (response.success) {
+                        hideError();
+                        showResult(response.shortUrl);
+                        saveToHistory(longUrl, response.shortUrl, response.shortCode);
+                        loadHistory();
+                    } else {
+                        showError(response.error || 'Failed to shorten URL');
+                    }
+                } catch (error) {
+                    showError('Something went wrong. Please try again.');
+                    console.error(error);
+                }
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                shortUrlInput.select();
+                document.execCommand('copy');
+                
+                // Change button text temporarily
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check me-1"></i> Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            });
+            
+            function showResult(shortUrl) {
+                shortUrlInput.value = shortUrl;
+                resultDiv.classList.remove('hidden');
+            }
+            
+            function showError(message) {
+                errorText.textContent = message;
+                errorMessage.classList.remove('hidden');
+            }
+            
+            function hideError() {
+                errorMessage.classList.add('hidden');
+            }
+            
+            function saveToHistory(longUrl, shortUrl, shortCode) {
+                let history = JSON.parse(localStorage.getItem('urlHistory') || '[]');
+                
+                // Add new entry at the beginning
+                history.unshift({
+                    longUrl,
+                    shortUrl,
+                    shortCode,
+                    date: new Date().toISOString(),
+                    clicks: 0
+                });
+                
+                // Keep only the last 5 entries
+                history = history.slice(0, 5);
+                
+                localStorage.setItem('urlHistory', JSON.stringify(history));
+            }
+            
+            function loadHistory() {
+                const history = JSON.parse(localStorage.getItem('urlHistory') || '[]');
+                
+                if (history.length === 0) {
+                    historyDiv.innerHTML = `
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-2x mb-3"></i>
+                            <p>No shortened URLs yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                historyDiv.innerHTML = '';
+                
+                history.forEach(item => {
+                    const longUrlTruncated = item.longUrl.length > 40 ? 
+                        item.longUrl.substring(0, 40) + '...' : 
+                        item.longUrl;
+                    
+                    const date = new Date(item.date);
+                    const formattedDate = `${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
+                    
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="mb-1"><strong>${item.shortCode}</strong></div>
+                                <div class="text-truncate small" title="${item.longUrl}">${longUrlTruncated}</div>
+                                <div class="stats">
+                                    <span><i class="fas fa-calendar-alt me-1"></i> ${formattedDate}</span>
+                                    <span><i class="fas fa-mouse-pointer me-1"></i> ${item.clicks} clicks</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary copy-history-btn" data-url="${item.shortUrl}">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    historyDiv.appendChild(historyItem);
+                });
+                
+                // Add event listeners to copy buttons in history
+                document.querySelectorAll('.copy-history-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const url = this.getAttribute('data-url');
+                        navigator.clipboard.writeText(url).then(() => {
+                            const originalHTML = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i>';
+                            setTimeout(() => {
+                                this.innerHTML = originalHTML;
+                            }, 2000);
+                        });
+                    });
+                });
+            }
+            
+            // Simulate API call to the backend
+            async function simulateApiCall(longUrl) {
+                // In a real app, this would be an actual API call
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        // Generate a random 6-character code
+                        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        let shortCode = '';
+                        for (let i = 0; i < 6; i++) {
+                            shortCode += characters.charAt(Math.floor(Math.random() * characters.length));
+                        }
+                        
+                        const shortUrl = `https://tiny.link/${shortCode}`;
+                        
+                        resolve({
+                            success: true,
+                            shortUrl,
+                            shortCode
+                        });
+                    }, 1000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

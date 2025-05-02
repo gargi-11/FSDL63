@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+        button {
+            background: #6e8efb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #5d7de8;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <form id="url-form">
+            <input type="url" id="longUrl" placeholder="Enter long URL" required>
+            <button type="submit">Shorten URL</button>
+        </form>
+        <div id="result"></div>
+        <div id="history" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        document.getElementById('url-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const longUrl = document.getElementById('longUrl').value;
+            
+            // In a real app, this would be an API call to your backend
+            const shortCode = generateCode();
+            const shortUrl = `http://short.url/${shortCode}`;
+            
+            // Show result
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <p>Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>
+                <button onclick="copyToClipboard('${shortUrl}')">Copy</button>
+            `;
+            
+            // Add to history
+            addToHistory(longUrl, shortUrl);
+        });
+        
+        function generateCode() {
+            // Generate a random 6-character code
+            let code = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            for (let i = 0; i < 6; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return code;
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+        
+        function addToHistory(longUrl, shortUrl) {
+            const history = document.getElementById('history');
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `
+                <p>Original: ${longUrl.substring(0, 30)}${longUrl.length > 30 ? '...' : ''}</p>
+                <p>Short: <a href="${shortUrl}" target="_blank">${shortUrl}</a></p>
+            `;
+            history.prepend(item);
+        }
+    </script>
+</body>
+</html>
