@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback Survey</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #2c3e50;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .radio-group, .checkbox-group {
+            margin-top: 10px;
+        }
+        
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .radio-option input, .checkbox-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .rating-group {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .rating-option label {
+            margin: 5px 0;
+            font-weight: normal;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .rating-group {
+                flex-direction: column;
+            }
+            
+            .rating-option {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-header">
+            <h1>Customer Feedback Survey</h1>
+            <p>We value your feedback! Please take a moment to help us improve our services.</p>
+        </div>
+        
+        <form id="survey-form">
+            <!-- Personal Information -->
+            <div class="form-group">
+                <label for="name" class="required">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="required">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email address" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" placeholder="Enter your age" min="18" max="120">
+            </div>
+            
+            <!-- Dropdown for Preferences -->
+            <div class="form-group">
+                <label for="product" class="required">Which product/service are you rating?</label>
+                <select id="product" required>
+                    <option value="" disabled selected>Select a product/service</option>
+                    <option value="product1">Product 1</option>
+                    <option value="product2">Product 2</option>
+                    <option value="service1">Service 1</option>
+                    <option value="service2">Service 2</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <!-- Radio Buttons for Rating -->
+            <div class="form-group">
+                <label class="required">How would you rate your overall experience?</label>
+                <div class="rating-group">
+                    <div class="rating-option">
+                        <input type="radio" id="rating-1" name="rating" value="1" required>
+                        <label for="rating-1">Very Poor</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating-2" name="rating" value="2">
+                        <label for="rating-2">Poor</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating-3" name="rating" value="3">
+                        <label for="rating-3">Average</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating-4" name="rating" value="4">
+                        <label for="rating-4">Good</label>
+                    </div>
+                    <div class="rating-option">
+                        <input type="radio" id="rating-5" name="rating" value="5">
+                        <label for="rating-5">Excellent</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Checkboxes for Multiple Selection -->
+            <div class="form-group">
+                <label>What aspects did you like? (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="like-quality" name="likes" value="quality">
+                        <label for="like-quality">Quality</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="like-price" name="likes" value="price">
+                        <label for="like-price">Price</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="like-service" name="likes" value="service">
+                        <label for="like-service">Customer Service</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="like-design" name="likes" value="design">
+                        <label for="like-design">Design/Usability</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Text Area for Comments -->
+            <div class="form-group">
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" rows="5" placeholder="Please share any additional feedback you may have..."></textarea>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit">Submit Survey</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('survey-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your feedback!');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

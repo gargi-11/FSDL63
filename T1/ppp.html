@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .profile-section {
+            padding: 3rem 0;
+        }
+        .profile-img {
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .bg-gradient {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+        .skill-badge {
+            background: #2575fc;
+            color: white;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin: 5px;
+            display: inline-block;
+        }
+        .contact-icon {
+            font-size: 1.8rem;
+            margin: 0 10px;
+            color: #6a11cb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-gradient py-5 text-center">
+        <div class="container">
+            <img src="/api/placeholder/200/200" alt="Profile Picture" class="profile-img mb-4">
+            <h1>John Doe</h1>
+            <p class="lead">Web Developer & UX Designer</p>
+        </div>
+    </header>
+
+    <!-- Bio Section -->
+    <section id="bio" class="profile-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="mb-4">About Me</h2>
+                    <p class="lead">I'm a passionate web developer with 5+ years of experience creating beautiful, functional websites. I specialize in frontend development and have a keen eye for design.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="profile-section bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Skills</h2>
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-body">
+                            <h3 class="h4 mb-3">Frontend</h3>
+                            <div>
+                                <span class="skill-badge">HTML5</span>
+                                <span class="skill-badge">CSS3</span>
+                                <span class="skill-badge">JavaScript</span>
+                                <span class="skill-badge">React</span>
+                                <span class="skill-badge">Bootstrap</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-body">
+                            <h3 class="h4 mb-3">Backend</h3>
+                            <div>
+                                <span class="skill-badge">Node.js</span>
+                                <span class="skill-badge">Express</span>
+                                <span class="skill-badge">MongoDB</span>
+                                <span class="skill-badge">RESTful APIs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow">
+                        <div class="card-body">
+                            <h3 class="h4 mb-3">Design</h3>
+                            <div>
+                                <span class="skill-badge">Figma</span>
+                                <span class="skill-badge">Adobe XD</span>
+                                <span class="skill-badge">UI/UX</span>
+                                <span class="skill-badge">Responsive Design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="profile-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Education</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h3 class="h5">Master of Computer Science</h3>
+                                <span class="text-muted">2018-2020</span>
+                            </div>
+                            <p class="mb-0">Stanford University</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4 shadow">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h3 class="h5">Bachelor of Computer Science</h3>
+                                <span class="text-muted">2014-2018</span>
+                            </div>
+                            <p class="mb-0">MIT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="profile-section bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Contact Me</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Your Email">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="5" placeholder="Your Message"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <p>Email: john@example.com | Phone: (123) 456-7890</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <p class="mb-0">© 2025 John Doe. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
